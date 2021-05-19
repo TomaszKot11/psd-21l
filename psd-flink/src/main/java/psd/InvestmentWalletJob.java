@@ -49,7 +49,7 @@ public class InvestmentWalletJob {
 	public static final class Tokenizer implements FlatMapFunction<String, Tuple2<Integer, Double>> {
 		@Override
 		public void flatMap(String value, Collector<Tuple2<Integer, Double>> out) {
-			String[] tokens = value.split("\\W+");
+			String[] tokens = value.split(",");
 			for (int i = 1; i < 7; i++) {
 				String token = tokens[i];
 				if (token.length() > 0) {
