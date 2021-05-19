@@ -8,23 +8,16 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.Preconditions;
 
+
 public class InvestmentWalletJob {
 
 	public static void main(String[] args) throws Exception {
-
-		// Checking input parameters
 		final MultipleParameterTool params = MultipleParameterTool.fromArgs(args);
-
-		// set up the execution environment
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-		// make parameters available in the web interface
 		env.getConfig().setGlobalJobParameters(params);
 
-		// get input data
 		DataStream<String> text = null;
 		if (params.has("input")) {
-			// union all the inputs from text files
 			for (String input : params.getMultiParameterRequired("input")) {
 				if (text == null) {
 					text = env.readTextFile(input);
@@ -35,43 +28,33 @@ public class InvestmentWalletJob {
 			Preconditions.checkNotNull(text, "Input DataStream should not be null.");
 		}
 
-		DataStream<Tuple2<String, Integer>> counts =
-						// split up the lines in pairs (2-tuples) containing: (word,1)
-						text.flatMap(new Tokenizer())
-										// group by the tuple field "0" and sum up tuple field "1"
-										.keyBy(value -> value.f0)
-										.sum(1);
+		if (text != null) {
+			DataStream<Tuple2<Integer, Double>> stream =
+							text.flatMap(new Tokenizer())
+											.keyBy(value -> value.f0)
+											.countWindow(30, 1)
+											.sum(1);
 
-		// emit result
-		if (params.has("output")) {
-			counts.writeAsText(params.get("output"));
+			// TODO: apply statistics on it
+			// TODO: apply alerts based on statistics (https://flink.apache.org/news/2020/01/15/demo-fraud-detection.html)
+
+			if (params.has("output")) {
+				stream.writeAsText(params.get("output"));
+			}
+
+			env.execute("Streaming InvestmentWalletJob");
 		}
-
-		// execute program
-		env.execute("Streaming InvestmentWalletJob");
 	}
 
-	// *************************************************************************
-	// USER FUNCTIONS
-	// *************************************************************************
-
-	/**
-	 * Implements the string tokenizer that splits sentences into words as a user-defined
-	 * FlatMapFunction. The function takes a line (String) and splits it into multiple pairs in the
-	 * form of "(word,1)" ({@code Tuple2<String, Integer>}).
-	 */
-	public static final class Tokenizer
-					implements FlatMapFunction<String, Tuple2<String, Integer>> {
-
+	public static final class Tokenizer implements FlatMapFunction<String, Tuple2<Integer, Double>> {
 		@Override
-		public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
-			// normalize and split the line
-			String[] tokens = value.toLowerCase().split("\\W+");
-
-			// emit the pairs
-			for (String token : tokens) {
+		public void flatMap(String value, Collector<Tuple2<Integer, Double>> out) {
+			String[] tokens = value.split("\\W+");
+			for (int i = 1; i < 7; i++) {
+				String token = tokens[i];
 				if (token.length() > 0) {
-					out.collect(new Tuple2<>(token, 1));
+					Double sample = Double.valueOf(token);
+					out.collect(new Tuple2<>(i, sample));
 				}
 			}
 		}
