@@ -43,7 +43,7 @@ public class StatsHelper {
     Arrays.sort(samples);
     int length = samples.length;
     int tenPercentIndex = (int) Math.floor(length * 0.1);
-    double[] dividedSamples = Arrays.copyOfRange(samples, 1, tenPercentIndex);
+    double[] dividedSamples = Arrays.copyOfRange(samples, 0, tenPercentIndex);
     return Stats.meanOf(dividedSamples);
   }
 
