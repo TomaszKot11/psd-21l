@@ -1,11 +1,25 @@
-package psd;
+package psd.stats;
 
-import org.apache.flink.shaded.curator4.com.google.common.math.Stats;
 import org.apache.flink.shaded.curator4.com.google.common.math.Quantiles;
+import org.apache.flink.shaded.curator4.com.google.common.math.Stats;
 
 import java.util.Arrays;
 
 public class StatsHelper {
+
+  private StatsHelper() {
+  }
+
+  public static StatsAggregationResult calculateStats(double[] samples) {
+    return new StatsAggregationResult(
+            mean(samples),
+            median(samples),
+            quantile(samples),
+            meanFromMinRates(samples),
+            safetyRateAverageDeviation(samples),
+            safetyRateGini(samples)
+    );
+  }
 
   public static double mean(double[] samples) {
     checkArray(samples);
@@ -17,13 +31,13 @@ public class StatsHelper {
     return Quantiles.median().compute(samples);
   }
 
-  // kwantyl rzędu 0,1,
+  // Kwantyl rzędu 0,1,
   public static double quantile(double[] samples) {
     checkArray(samples);
     return Quantiles.scale(10).index(1).compute(samples);
   }
 
-  // średnia z 10% najmniejszych stóp zwrotu,
+  // Średnia z 10% najmniejszych stóp zwrotu,
   public static double meanFromMinRates(double[] samples) {
     checkArray(samples);
     Arrays.sort(samples);
@@ -33,8 +47,8 @@ public class StatsHelper {
     return Stats.meanOf(dividedSamples);
   }
 
-  // miara bezpieczeństwa oparta na odchyleniu przeciętnym
-  public static double safeRateAverageDeviation(double[] samples) {
+  // Miara bezpieczeństwa oparta na odchyleniu przeciętnym
+  public static double safetyRateAverageDeviation(double[] samples) {
     checkArray(samples);
 
     double mean = Stats.meanOf(samples);
@@ -43,11 +57,11 @@ public class StatsHelper {
     for (double sample : samples) {
       sum += Math.abs(mean - sample);
     }
-    return 1 / (2D*t) * sum;
+    return 1 / (2D * t) * sum;
   }
 
-  // miara bezpieczeństwa oparta na średniej różnicy Giniego
-  public static double safeRateGini(double[] samples) {
+  // Miara bezpieczeństwa oparta na średniej różnicy Giniego
+  public static double safetyRateGini(double[] samples) {
     checkArray(samples);
 
     int t = samples.length;
@@ -60,6 +74,10 @@ public class StatsHelper {
       sumOfSums += sum;
     }
     return 1 / (2D * t * t) * sumOfSums;
+  }
+
+  public static boolean lowerThanThreshold(double value, double threshold) {
+    return threshold - value >= threshold * 0.1;
   }
 
   private static void checkArray(double[] samples) {

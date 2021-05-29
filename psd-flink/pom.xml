@@ -109,6 +109,11 @@ under the License.
 			<artifactId>guava</artifactId>
 			<version>14.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-cep_2.11</artifactId>
+			<version>1.13.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
