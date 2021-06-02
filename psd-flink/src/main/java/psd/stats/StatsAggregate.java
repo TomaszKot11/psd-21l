@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatsAggregate implements AggregateFunction<Tuple2<Integer, Double>, Tuple2<Integer, List<Double>>, Tuple2<Integer, StatsAggregationResult>> {
+  private int amountOfSamples;
+
   @Override
   public Tuple2<Integer, List<Double>> createAccumulator() {
+    amountOfSamples = 0;
     return new Tuple2<>(1, new ArrayList<>());
   }
 
   @Override
   public Tuple2<Integer, List<Double>> add(Tuple2<Integer, Double> value, Tuple2<Integer, List<Double>> accumulator) {
+    amountOfSamples++;
     accumulator.f1.add(value.f1);
     return new Tuple2<>(value.f0, accumulator.f1);
   }
@@ -23,9 +27,16 @@ public class StatsAggregate implements AggregateFunction<Tuple2<Integer, Double>
   public Tuple2<Integer, StatsAggregationResult> getResult(Tuple2<Integer, List<Double>> accumulator) {
     Double[] d = accumulator.f1.toArray(new Double[0]);
     double[] samples = ArrayUtils.toPrimitive(d);
+    int assetId = accumulator.f0;
+
+    // Calculate results
     StatsAggregationResult result = StatsHelper.calculateStats(samples);
-    // TODO: print window's name
-    System.out.println("StatsAggregate: " + result.toString());
+
+    // Print result for current window
+    System.out.println("StatsAggregate: samples: " + amountOfSamples
+            + ", asset: " + assetId
+            + ", " + result.toString());
+
     return new Tuple2<>(accumulator.f0, result);
   }
 

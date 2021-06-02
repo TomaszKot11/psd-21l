@@ -45,7 +45,7 @@ public class StatsAggregationResult {
 
   @Override
   public String toString() {
-    return "StatsAggregationResult{" +
+    return "result: " +
             "m=" + mean +
             ", md=" + median +
             ", q=" + quantile +

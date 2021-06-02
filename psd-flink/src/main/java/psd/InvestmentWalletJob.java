@@ -63,9 +63,6 @@ public class InvestmentWalletJob {
         stream.writeAsText(params.get(OUTPUT_KEY));
       }
 
-      // Print stream to stdout
-      stream.print();
-
       // Simple alert pattern, filter "suspicious" statistics
       Pattern<Tuple2<Integer, StatsAggregationResult>, ?> alertPattern = Pattern.begin(PATTERN_NAME);
 

@@ -15,7 +15,7 @@ public class StatsHelper {
             mean(samples),
             median(samples),
             quantile(samples),
-            0,//meanFromMinRates(samples), // TODO: debug the function
+            meanFromMinRates(samples),
             safetyRateAverageDeviation(samples),
             safetyRateGini(samples)
     );
@@ -40,9 +40,16 @@ public class StatsHelper {
   // Średnia z 10% najmniejszych stóp zwrotu
   public static double meanFromMinRates(double[] samples) {
     checkArray(samples);
-    Arrays.sort(samples);
     int length = samples.length;
     int tenPercentIndex = (int) Math.floor(length * 0.1);
+
+    // First 9 windows can't have 10% calculated as integer value, so we'll sort nor divide them
+    if (tenPercentIndex == 0) {
+      return Stats.meanOf(samples);
+    }
+
+    // Take 10% lowest rates - sort array and take samples from <0, 10%index>
+    Arrays.sort(samples);
     double[] dividedSamples = Arrays.copyOfRange(samples, 0, tenPercentIndex);
     return Stats.meanOf(dividedSamples);
   }
@@ -50,7 +57,6 @@ public class StatsHelper {
   // Miara bezpieczeństwa oparta na odchyleniu przeciętnym
   public static double safetyRateAverageDeviation(double[] samples) {
     checkArray(samples);
-
     double mean = Stats.meanOf(samples);
     int t = samples.length;
     double sum = 0;

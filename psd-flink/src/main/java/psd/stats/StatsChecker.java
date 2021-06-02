@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatsChecker {
+  // TODO: replace with real values
   private static final double MEAN_THRESHOLD = -0.014043304766666662;
   private static final double MEDIAN_THRESHOLD = -0.010948185;
   private static final double QUANTILE_THRESHOLD = -0.08794572989999999;
-  private static final double MEAN_FROM_MIN_RATES_THRESHOLD = 1;
+  private static final double MEAN_FROM_MIN_RATES_THRESHOLD = -0.09732010833333334;
   private static final double SAFETY_RATE_AVG_DEV_THRESHOLD = 0.020040304575555556;
   private static final double SAFETY_RATE_GINI_THRESHOLD = 0.027843420183333332;
 
-  private StatsChecker() {
-  }
+  private StatsChecker() {}
 
   // Produces alerts on events that values are 10% lower than constant threshold
   public static List<StatsAlert> produceAlertsFor(Tuple2<Integer, StatsAggregationResult> tuple) {
@@ -44,8 +44,7 @@ public class StatsChecker {
       }
     }
 
-    // TODO: debug and see why it crashes
-    if (false && result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD) {
+    if (result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD) {
       double value = result.getMeanFromMinRates();
       if (StatsHelper.lowerThanThreshold(value, MEAN_FROM_MIN_RATES_THRESHOLD)) {
         alertsProduced.add(new MeanFromMinRates(assetId, MEAN_FROM_MIN_RATES_THRESHOLD, value));
