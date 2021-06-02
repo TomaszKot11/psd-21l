@@ -1,19 +1,15 @@
 package psd.alerts;
 
 public class MedianAlert extends StatsAlert {
-  private double median;
+  private final double median;
 
-  public MedianAlert(int assetId, double median) {
-    super(assetId);
+  public MedianAlert(int assetId, double threshold, double median) {
+    super(assetId, threshold);
     this.median = median;
   }
 
   public double getMedian() {
     return median;
-  }
-
-  public void setMedian(double median) {
-    this.median = median;
   }
 
   @Override
@@ -38,6 +34,6 @@ public class MedianAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "MedianAlert(" + getAssetId() + ", " + median + ")";
+    return "MedianAlert(" + getBasicInfo() + median + ")";
   }
 }

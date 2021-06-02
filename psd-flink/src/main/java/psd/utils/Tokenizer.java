@@ -16,7 +16,8 @@ public final class Tokenizer implements FlatMapFunction<String, Tuple2<Integer, 
         Double sample = Double.valueOf(token);
 
         // Index of column as a key and sample as value
-        out.collect(new Tuple2<>(i, sample));
+        final Tuple2<Integer, Double> tuple = new Tuple2<>(i, sample);
+        out.collect(tuple);
       }
     }
   }

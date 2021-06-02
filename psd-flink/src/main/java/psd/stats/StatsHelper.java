@@ -15,7 +15,7 @@ public class StatsHelper {
             mean(samples),
             median(samples),
             quantile(samples),
-            meanFromMinRates(samples),
+            0,//meanFromMinRates(samples), // TODO: debug the function
             safetyRateAverageDeviation(samples),
             safetyRateGini(samples)
     );
@@ -31,13 +31,13 @@ public class StatsHelper {
     return Quantiles.median().compute(samples);
   }
 
-  // Kwantyl rzędu 0,1,
+  // Kwantyl rzędu 0,1
   public static double quantile(double[] samples) {
     checkArray(samples);
     return Quantiles.scale(10).index(1).compute(samples);
   }
 
-  // Średnia z 10% najmniejszych stóp zwrotu,
+  // Średnia z 10% najmniejszych stóp zwrotu
   public static double meanFromMinRates(double[] samples) {
     checkArray(samples);
     Arrays.sort(samples);
@@ -77,12 +77,12 @@ public class StatsHelper {
   }
 
   public static boolean lowerThanThreshold(double value, double threshold) {
-    return threshold - value >= threshold * 0.1;
+    return value <= 0.9 * threshold;
   }
 
   private static void checkArray(double[] samples) {
-    if (samples.length == 0) {
-      throw new IllegalArgumentException("Samples array can't be empty!");
+    if (samples == null || samples.length == 0) {
+      throw new IllegalArgumentException("Samples array can't be null or empty!");
     }
   }
 }

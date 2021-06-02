@@ -1,14 +1,10 @@
 package psd.alerts;
 
 public class MeanFromMinRates extends StatsAlert {
-  private double mean;
+  private final double mean;
 
-  public MeanFromMinRates(int assetId, double mean) {
-    super(assetId);
-    this.mean = mean;
-  }
-
-  public void setMean(double mean) {
+  public MeanFromMinRates(int assetId, double threshold, double mean) {
+    super(assetId, threshold);
     this.mean = mean;
   }
 
@@ -38,6 +34,6 @@ public class MeanFromMinRates extends StatsAlert {
 
   @Override
   public String toString() {
-    return "MeanFromMinRates(" + getAssetId() + ", " + mean + ")";
+    return "MeanFromMinRates(" + getBasicInfo() + mean + ")";
   }
 }

@@ -1,14 +1,10 @@
 package psd.alerts;
 
 public class SafetyRateAlert extends StatsAlert {
-  private double rate;
+  private final double rate;
 
-  public SafetyRateAlert(int assetId, double rate) {
-    super(assetId);
-    this.rate = rate;
-  }
-
-  public void setRate(double rate) {
+  public SafetyRateAlert(int assetId, double threshold, double rate) {
+    super(assetId, threshold);
     this.rate = rate;
   }
 
@@ -38,6 +34,6 @@ public class SafetyRateAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "SafetyRateAlert(" + getAssetId() + ", " + rate + ")";
+    return "SafetyRateAlert(" + getBasicInfo() + rate + ")";
   }
 }

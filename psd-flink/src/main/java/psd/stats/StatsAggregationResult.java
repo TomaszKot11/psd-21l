@@ -42,4 +42,16 @@ public class StatsAggregationResult {
   public double getSafetyRateGini() {
     return safetyRateGini;
   }
+
+  @Override
+  public String toString() {
+    return "StatsAggregationResult{" +
+            "m=" + mean +
+            ", md=" + median +
+            ", q=" + quantile +
+            ", mmr=" + meanFromMinRates +
+            ", sr=" + safetyRateAverageDeviation +
+            ", gini=" + safetyRateGini +
+            '}';
+  }
 }

@@ -1,14 +1,10 @@
 package psd.alerts;
 
 public class QuanitleAlert extends StatsAlert {
-  private double quantile;
+  private final double quantile;
 
-  public QuanitleAlert(int assetId, double quantile) {
-    super(assetId);
-    this.quantile = quantile;
-  }
-
-  public void setQuantile(double quantile) {
+  public QuanitleAlert(int assetId, double threshold, double quantile) {
+    super(assetId, threshold);
     this.quantile = quantile;
   }
 
@@ -38,6 +34,6 @@ public class QuanitleAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "QuanitleAlert(" + getAssetId() + ", " + quantile + ")";
+    return "QuanitleAlert(" + getBasicInfo() + quantile + ")";
   }
 }

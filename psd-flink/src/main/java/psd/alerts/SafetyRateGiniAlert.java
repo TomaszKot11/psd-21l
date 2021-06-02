@@ -1,14 +1,10 @@
 package psd.alerts;
 
 public class SafetyRateGiniAlert extends StatsAlert {
-  private double rate;
+  private final double rate;
 
-  public SafetyRateGiniAlert(int assetId, double rate) {
-    super(assetId);
-    this.rate = rate;
-  }
-
-  public void setRate(double rate) {
+  public SafetyRateGiniAlert(int assetId, double threshold, double rate) {
+    super(assetId, threshold);
     this.rate = rate;
   }
 
@@ -38,6 +34,6 @@ public class SafetyRateGiniAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "SafetyRateGiniAlert(" + getAssetId() + ", " + rate + ")";
+    return "SafetyRateGiniAlert(" + getBasicInfo() + rate + ")";
   }
 }

@@ -24,6 +24,8 @@ public class StatsAggregate implements AggregateFunction<Tuple2<Integer, Double>
     Double[] d = accumulator.f1.toArray(new Double[0]);
     double[] samples = ArrayUtils.toPrimitive(d);
     StatsAggregationResult result = StatsHelper.calculateStats(samples);
+    // TODO: print window's name
+    System.out.println("StatsAggregate: " + result.toString());
     return new Tuple2<>(accumulator.f0, result);
   }
 

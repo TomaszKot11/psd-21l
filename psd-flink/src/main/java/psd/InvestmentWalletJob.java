@@ -63,6 +63,9 @@ public class InvestmentWalletJob {
         stream.writeAsText(params.get(OUTPUT_KEY));
       }
 
+      // Print stream to stdout
+      stream.print();
+
       // Simple alert pattern, filter "suspicious" statistics
       Pattern<Tuple2<Integer, StatsAggregationResult>, ?> alertPattern = Pattern.begin(PATTERN_NAME);
 
@@ -82,7 +85,7 @@ public class InvestmentWalletJob {
               TypeInformation.of(StatsAlert.class)
       );
 
-      // Print the warning and alert alerts to stdout
+      // Print alerts to stdout
       alerts.print();
 
       // Execute job
