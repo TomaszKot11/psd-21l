@@ -12,5 +12,5 @@ Run:
 ```
 ./bin/flink run \
       --detached \
-      ./jobs/psd-flink/psd-flink-1.0.jar --input jobs/psd-flink/samples.csv --output jobs/psd-flink/out.txt
+      ./jobs/psd-flink/psd-flink-1.0.jar --input jobs/psd-flink/samples.csv
 ```
