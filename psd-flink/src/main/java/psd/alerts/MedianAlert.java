@@ -3,12 +3,13 @@ package psd.alerts;
 public class MedianAlert extends StatsAlert {
   private final double median;
 
-  public MedianAlert(int assetId, double threshold, double median) {
-    super(assetId, threshold);
+  public MedianAlert(int windowId, double threshold, double median, int assetId) {
+    super(windowId, assetId, threshold);
     this.median = median;
   }
 
-  public double getMedian() {
+  @Override
+  public double getValue() {
     return median;
   }
 

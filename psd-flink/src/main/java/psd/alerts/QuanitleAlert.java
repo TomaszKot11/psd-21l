@@ -3,12 +3,13 @@ package psd.alerts;
 public class QuanitleAlert extends StatsAlert {
   private final double quantile;
 
-  public QuanitleAlert(int assetId, double threshold, double quantile) {
-    super(assetId, threshold);
+  public QuanitleAlert(int windowId, double threshold, double quantile, int assetId) {
+    super(windowId, assetId, threshold);
     this.quantile = quantile;
   }
 
-  public double getQuantile() {
+  @Override
+  public double getValue() {
     return quantile;
   }
 

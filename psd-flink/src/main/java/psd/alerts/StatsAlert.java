@@ -1,12 +1,20 @@
 package psd.alerts;
 
 public abstract class StatsAlert {
+  private final int windowId;
   private final int assetId;
   private final double threshold;
 
-  protected StatsAlert(int assetId, double threshold) {
+  protected StatsAlert(int windowId, int assetId, double threshold) {
+    this.windowId = windowId;
     this.assetId = assetId;
     this.threshold = threshold;
+  }
+
+  public abstract double getValue();
+
+  public int getWindowId() {
+    return windowId;
   }
 
   public int getAssetId() {
@@ -18,7 +26,7 @@ public abstract class StatsAlert {
   }
 
   protected String getBasicInfo() {
-    return assetId + ", threshold: " + threshold + ", ";
+    return "window: " + windowId + ", asset: " + assetId + ", threshold: " + threshold + ", " + "value: ";
   }
 
   @Override

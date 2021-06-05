@@ -3,12 +3,13 @@ package psd.alerts;
 public class SafetyRateGiniAlert extends StatsAlert {
   private final double rate;
 
-  public SafetyRateGiniAlert(int assetId, double threshold, double rate) {
-    super(assetId, threshold);
+  public SafetyRateGiniAlert(int windowId, double threshold, double rate, int assetId) {
+    super(windowId, assetId, threshold);
     this.rate = rate;
   }
 
-  public double getRate() {
+  @Override
+  public double getValue() {
     return rate;
   }
 

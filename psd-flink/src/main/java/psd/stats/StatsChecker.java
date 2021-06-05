@@ -22,46 +22,47 @@ public class StatsChecker {
     final List<StatsAlert> alertsProduced = new ArrayList<>();
     final int assetId = tuple.f0;
     final StatsAggregationResult result = tuple.f1;
+    final int windowId = result.getWindowId();
 
     if (result.getMean() < MEAN_THRESHOLD) {
       double value = result.getMean();
       if (StatsHelper.lowerThanThreshold(value, MEAN_THRESHOLD)) {
-        alertsProduced.add(new MeanAlert(assetId, MEAN_THRESHOLD, value));
+        alertsProduced.add(new MeanAlert(windowId, MEAN_THRESHOLD, value, assetId));
       }
     }
 
     if (result.getMedian() < MEDIAN_THRESHOLD) {
       double value = result.getMedian();
       if (StatsHelper.lowerThanThreshold(value, MEDIAN_THRESHOLD)) {
-        alertsProduced.add(new MedianAlert(assetId, MEDIAN_THRESHOLD, value));
+        alertsProduced.add(new MedianAlert(windowId, MEDIAN_THRESHOLD, value, assetId));
       }
     }
 
     if (result.getQuantile() < QUANTILE_THRESHOLD) {
       double value = result.getQuantile();
       if (StatsHelper.lowerThanThreshold(value, QUANTILE_THRESHOLD)) {
-        alertsProduced.add(new QuanitleAlert(assetId, QUANTILE_THRESHOLD, value));
+        alertsProduced.add(new QuanitleAlert(windowId, QUANTILE_THRESHOLD, value, assetId));
       }
     }
 
     if (result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD) {
       double value = result.getMeanFromMinRates();
       if (StatsHelper.lowerThanThreshold(value, MEAN_FROM_MIN_RATES_THRESHOLD)) {
-        alertsProduced.add(new MeanFromMinRates(assetId, MEAN_FROM_MIN_RATES_THRESHOLD, value));
+        alertsProduced.add(new MeanFromMinRates(windowId, MEAN_FROM_MIN_RATES_THRESHOLD, value, assetId));
       }
     }
 
     if (result.getSafetyRateAverageDeviation() < SAFETY_RATE_AVG_DEV_THRESHOLD) {
       double value = result.getSafetyRateAverageDeviation();
       if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_AVG_DEV_THRESHOLD)) {
-        alertsProduced.add(new SafetyRateAlert(assetId, SAFETY_RATE_AVG_DEV_THRESHOLD, value));
+        alertsProduced.add(new SafetyRateAlert(windowId, SAFETY_RATE_AVG_DEV_THRESHOLD, value, assetId));
       }
     }
 
     if (result.getSafetyRateGini() < SAFETY_RATE_GINI_THRESHOLD) {
       double value = result.getSafetyRateGini();
       if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_GINI_THRESHOLD)) {
-        alertsProduced.add(new SafetyRateGiniAlert(assetId, SAFETY_RATE_GINI_THRESHOLD, value));
+        alertsProduced.add(new SafetyRateGiniAlert(windowId, SAFETY_RATE_GINI_THRESHOLD, value, assetId));
       }
     }
 

@@ -3,12 +3,13 @@ package psd.alerts;
 public class MeanAlert extends StatsAlert {
   private final double mean;
 
-  public MeanAlert(int assetId, double threshold, double mean) {
-    super(assetId, threshold);
+  public MeanAlert(int windowId, double threshold, double mean, int assetId) {
+    super(windowId, assetId, threshold);
     this.mean = mean;
   }
 
-  public double getMean() {
+  @Override
+  public double getValue() {
     return mean;
   }
 

@@ -10,8 +10,9 @@ public class StatsHelper {
   private StatsHelper() {
   }
 
-  public static StatsAggregationResult calculateStats(double[] samples) {
+  public static StatsAggregationResult calculateStats(int sampleId, double[] samples) {
     return new StatsAggregationResult(
+            sampleId,
             mean(samples),
             median(samples),
             quantile(samples),

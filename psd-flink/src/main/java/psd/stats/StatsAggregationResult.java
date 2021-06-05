@@ -1,6 +1,7 @@
 package psd.stats;
 
 public class StatsAggregationResult {
+  private final int windowId;
   private final double mean;
   private final double median;
   private final double quantile;
@@ -8,15 +9,20 @@ public class StatsAggregationResult {
   private final double safetyRateAverageDeviation;
   private final double safetyRateGini;
 
-  public StatsAggregationResult(double mean, double median, double quantile,
+  public StatsAggregationResult(int windowId, double mean, double median, double quantile,
                                 double meanFromMinRates, double safetyRateAverageDeviation,
                                 double safetyRateGini) {
+    this.windowId = windowId;
     this.mean = mean;
     this.median = median;
     this.quantile = quantile;
     this.meanFromMinRates = meanFromMinRates;
     this.safetyRateAverageDeviation = safetyRateAverageDeviation;
     this.safetyRateGini = safetyRateGini;
+  }
+
+  public int getWindowId() {
+    return windowId;
   }
 
   public double getMean() {
@@ -45,7 +51,7 @@ public class StatsAggregationResult {
 
   @Override
   public String toString() {
-    return "result: " +
+    return "window: " + windowId + ", " +
             "m=" + mean +
             ", md=" + median +
             ", q=" + quantile +
