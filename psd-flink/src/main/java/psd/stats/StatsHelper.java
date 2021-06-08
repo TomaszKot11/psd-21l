@@ -84,7 +84,7 @@ public class StatsHelper {
   }
 
   public static boolean lowerThanThreshold(double value, double threshold) {
-    return value <= 0.9 * threshold;
+    return (threshold - value) / (1 + threshold) >= 0.1;
   }
 
   private static void checkArray(double[] samples) {

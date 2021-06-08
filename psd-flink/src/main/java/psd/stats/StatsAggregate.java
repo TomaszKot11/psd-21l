@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
-import psd.InvestmentWalletJob;
 
 import java.util.ArrayList;
 import java.util.List;
