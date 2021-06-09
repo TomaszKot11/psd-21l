@@ -7,13 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatsChecker {
-  // TODO: replace with real values
-  private static final double MEAN_THRESHOLD = -0.014043304766666662;
-  private static final double MEDIAN_THRESHOLD = -0.010948185;
-  private static final double QUANTILE_THRESHOLD = -0.08794572989999999;
-  private static final double MEAN_FROM_MIN_RATES_THRESHOLD = -0.09732010833333334;
-  private static final double SAFETY_RATE_AVG_DEV_THRESHOLD = 0.020040304575555556;
-  private static final double SAFETY_RATE_GINI_THRESHOLD = 0.027843420183333332;
+
+  /**
+  // For testing (first 100 samples):
+  private static final double[] MEAN_THRESHOLD = {-0.006894507, 0.004927153, 0.00134661, -0.001135192, 0.003586044, -0.01379235};
+  private static final double[] MEDIAN_THRESHOLD = {-0.002762632, 0.01151195, -0.002524657, -0.003271306, 0.006812286, -0.02584299};
+  private static final double[] QUANTILE_THRESHOLD = {-0.07934302, -0.07264282, -0.07145597, -0.07667505, -0.07903422, -0.08632244};
+  private static final double[] MEAN_FROM_MIN_RATES_THRESHOLD = {-0.08980066, -0.08159521, -0.086443, -0.09122514, -0.08923056, -0.09611306};
+  private static final double[] SAFETY_RATE_AVG_DEV_THRESHOLD = {0.02552551, 0.0251733, 0.02181392, 0.02429839, 0.02354965, 0.02586854};
+  private static final double[] SAFETY_RATE_GINI_THRESHOLD = {0.06781909, 0.06622779, 0.06090565, 0.06642242, 0.06432812, 0.06894819};
+   **/
+
+  private static final double[] MEAN_THRESHOLD = {2.741122E-05, 9.557385E-06, -7.064E-06, 8.467337E-05, 7.915884E-05, 3.187289E-05};
+  private static final double[] MEDIAN_THRESHOLD = {8.58E-05, 1.625E-05, 4.005E-06, 0.000182586, 4.775E-05, 2.05E-05};
+  private static final double[] QUANTILE_THRESHOLD = {-0.07981682 , -0.08011171, -0.0797318 , -0.08006085, -0.07988979, -0.07994182};
+  private static final double[] MEAN_FROM_MIN_RATES_THRESHOLD = {-0.09999902, -0.09999925, -0.09999895, -0.09999805, -0.09999878, -0.09999904};
+  private static final double[] SAFETY_RATE_AVG_DEV_THRESHOLD = {0.02492365, 0.02500448, 0.0249166, 0.02502468, 0.02497435, 0.02498649};
+  private static final double[] SAFETY_RATE_GINI_THRESHOLD = {0.06651252, 0.06668754, 0.06647875, 0.06671993, 0.06659843, 0.06664281};
 
   private StatsChecker() {}
 
@@ -21,48 +31,49 @@ public class StatsChecker {
   public static List<StatsAlert> produceAlertsFor(Tuple2<Integer, StatsAggregationResult> tuple) {
     final List<StatsAlert> alertsProduced = new ArrayList<>();
     final int assetId = tuple.f0;
+    final int index = assetId - 1;
     final StatsAggregationResult result = tuple.f1;
     final int windowId = result.getWindowId();
 
-    if (result.getMean() < MEAN_THRESHOLD) {
+    if (result.getMean() < MEAN_THRESHOLD[index]) {
       double value = result.getMean();
-      if (StatsHelper.lowerThanThreshold(value, MEAN_THRESHOLD)) {
-        alertsProduced.add(new MeanAlert(windowId, MEAN_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, MEAN_THRESHOLD[index])) {
+        alertsProduced.add(new MeanAlert(windowId, MEAN_THRESHOLD[index], value, assetId));
       }
     }
 
-    if (result.getMedian() < MEDIAN_THRESHOLD) {
+    if (result.getMedian() < MEDIAN_THRESHOLD[index]) {
       double value = result.getMedian();
-      if (StatsHelper.lowerThanThreshold(value, MEDIAN_THRESHOLD)) {
-        alertsProduced.add(new MedianAlert(windowId, MEDIAN_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, MEDIAN_THRESHOLD[index])) {
+        alertsProduced.add(new MedianAlert(windowId, MEDIAN_THRESHOLD[index], value, assetId));
       }
     }
 
-    if (result.getQuantile() < QUANTILE_THRESHOLD) {
+    if (result.getQuantile() < QUANTILE_THRESHOLD[index]) {
       double value = result.getQuantile();
-      if (StatsHelper.lowerThanThreshold(value, QUANTILE_THRESHOLD)) {
-        alertsProduced.add(new QuanitleAlert(windowId, QUANTILE_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, QUANTILE_THRESHOLD[index])) {
+        alertsProduced.add(new QuanitleAlert(windowId, QUANTILE_THRESHOLD[index], value, assetId));
       }
     }
 
-    if (result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD) {
+    if (result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD[index]) {
       double value = result.getMeanFromMinRates();
-      if (StatsHelper.lowerThanThreshold(value, MEAN_FROM_MIN_RATES_THRESHOLD)) {
-        alertsProduced.add(new MeanFromMinRates(windowId, MEAN_FROM_MIN_RATES_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, MEAN_FROM_MIN_RATES_THRESHOLD[index])) {
+        alertsProduced.add(new MeanFromMinRates(windowId, MEAN_FROM_MIN_RATES_THRESHOLD[index], value, assetId));
       }
     }
 
-    if (result.getSafetyRateAverageDeviation() < SAFETY_RATE_AVG_DEV_THRESHOLD) {
+    if (result.getSafetyRateAverageDeviation() < SAFETY_RATE_AVG_DEV_THRESHOLD[index]) {
       double value = result.getSafetyRateAverageDeviation();
-      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_AVG_DEV_THRESHOLD)) {
-        alertsProduced.add(new SafetyRateAlert(windowId, SAFETY_RATE_AVG_DEV_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_AVG_DEV_THRESHOLD[index])) {
+        alertsProduced.add(new SafetyRateAlert(windowId, SAFETY_RATE_AVG_DEV_THRESHOLD[index], value, assetId));
       }
     }
 
-    if (result.getSafetyRateGini() < SAFETY_RATE_GINI_THRESHOLD) {
+    if (result.getSafetyRateGini() < SAFETY_RATE_GINI_THRESHOLD[index]) {
       double value = result.getSafetyRateGini();
-      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_GINI_THRESHOLD)) {
-        alertsProduced.add(new SafetyRateGiniAlert(windowId, SAFETY_RATE_GINI_THRESHOLD, value, assetId));
+      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_GINI_THRESHOLD[index])) {
+        alertsProduced.add(new SafetyRateGiniAlert(windowId, SAFETY_RATE_GINI_THRESHOLD[index], value, assetId));
       }
     }
 

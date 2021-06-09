@@ -20,11 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 public class InvestmentWalletJob {
+  // Increase for new version
+  public static final int REVISION = 2;
+
   public static final boolean IS_DEBUG = false;
   public static final int DEFAULT_SLIDING_WINDOW_SIZE = 30;
   public static final int DEFAULT_SLIDE_SIZE = 1;
 
-  private static final String JOB_NAME = "Streaming InvestmentWalletJob";
+  private static final String JOB_NAME = "InvestmentWalletJob";
   private static final String INPUT_KEY = "input";
   private static final String OUTPUT_KEY = "output";
   private static final String ALERT_PATTERN_NAME = "statsChecker";
@@ -55,6 +58,8 @@ public class InvestmentWalletJob {
     }
 
     if (text != null) {
+      log("Preparing tokenization and aggregation step...");
+
       // Assign data stream with sliding window of 30 samples, moved by 1 sample, keyed by asset id
       DataStream<Tuple2<Integer, StatsAggregationResult>> stream =
               text.flatMap(new Tokenizer())
@@ -67,12 +72,16 @@ public class InvestmentWalletJob {
         stream.writeAsText(params.get(OUTPUT_KEY));
       }
 
+      log("Finishing preparing tokenization and aggregation step...");
+
       // Simple alert pattern, filter "suspicious" statistics
       Pattern<Tuple2<Integer, StatsAggregationResult>, ?> alertPattern = Pattern.begin(ALERT_PATTERN_NAME);
 
       // Create a pattern stream from our alert pattern
       // Key by assetId
       PatternStream<Tuple2<Integer, StatsAggregationResult>> alertPatternStream = CEP.pattern(stream, alertPattern);
+
+      log("Preparing alert generation step...");
 
       // Generate stats alerts and collect them
       DataStream<StatsAlert> alerts = alertPatternStream.flatSelect(
@@ -86,11 +95,20 @@ public class InvestmentWalletJob {
               TypeInformation.of(StatsAlert.class)
       );
 
+      log("Finishing preparing alert generation step...");
+      log("Preparing printing generated alerts step...");
+
       // Print alerts to stdout
       alerts.print();
+
+      log("Finishing preparing printing generated alerts step...");
 
       // Execute job
       env.execute(JOB_NAME);
     }
+  }
+
+  public static void log(String message) {
+    System.out.println(JOB_NAME + "-v" + REVISION + ": " + message);
   }
 }
