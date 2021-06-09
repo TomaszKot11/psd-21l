@@ -5,8 +5,8 @@ import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
 public class SafetyRateAlert extends StatsAlert {
   private final double rate;
 
-  public SafetyRateAlert(int windowId, double threshold, double rate, int assetId) {
-    super(windowId, assetId, threshold);
+  public SafetyRateAlert(int windowId, int assetId, double percentage, double threshold, double rate) {
+    super(windowId, assetId, percentage, threshold);
     this.rate = rate;
   }
 

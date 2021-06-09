@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class InvestmentWalletJob {
   // Increase for new version
-  public static final int REVISION = 4;
+  public static final int REVISION = 5;
 
   public static final boolean IS_DEBUG = false;
   public static final boolean IS_CSV_OUTPUT = true;

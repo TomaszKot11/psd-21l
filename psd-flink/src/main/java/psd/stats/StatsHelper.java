@@ -84,8 +84,12 @@ public class StatsHelper {
     return 1 / (2D * t * t) * sumOfSums;
   }
 
-  public static boolean lowerThanThreshold(double value, double threshold) {
-    return (threshold - value) / (1 + threshold) >= MAX_TOLERANCE;
+  public static double calculatePercentage(double value, double threshold) {
+    return (threshold - value) / (1 + threshold);
+  }
+
+  public static boolean higherThanMaxTolerance(double percentage) {
+    return percentage >= MAX_TOLERANCE;
   }
 
   private static void checkArray(double[] samples) {

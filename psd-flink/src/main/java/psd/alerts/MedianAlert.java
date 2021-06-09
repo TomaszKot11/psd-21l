@@ -5,8 +5,8 @@ import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
 public class MedianAlert extends StatsAlert {
   private final double median;
 
-  public MedianAlert(int windowId, double threshold, double median, int assetId) {
-    super(windowId, assetId, threshold);
+  public MedianAlert(int windowId, int assetId, double percentage, double threshold, double median) {
+    super(windowId, assetId, percentage, threshold);
     this.median = median;
   }
 

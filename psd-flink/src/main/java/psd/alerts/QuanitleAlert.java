@@ -5,8 +5,8 @@ import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
 public class QuanitleAlert extends StatsAlert {
   private final double quantile;
 
-  public QuanitleAlert(int windowId, double threshold, double quantile, int assetId) {
-    super(windowId, assetId, threshold);
+  public QuanitleAlert(int windowId, int assetId, double percentage, double threshold, double quantile) {
+    super(windowId, assetId, percentage, threshold);
     this.quantile = quantile;
   }
 

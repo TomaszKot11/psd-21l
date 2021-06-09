@@ -5,11 +5,13 @@ import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
 public abstract class StatsAlert {
   private final int windowId;
   private final int assetId;
+  private final double percentage;
   private final double threshold;
 
-  protected StatsAlert(int windowId, int assetId, double threshold) {
+  protected StatsAlert(int windowId, int assetId, double percentage, double threshold) {
     this.windowId = windowId;
     this.assetId = assetId;
+    this.percentage = percentage;
     this.threshold = threshold;
   }
 
@@ -23,21 +25,32 @@ public abstract class StatsAlert {
     return assetId;
   }
 
+  public double getPercentage() {
+    return percentage;
+  }
+
   public double getThreshold() {
     return threshold;
   }
 
   protected String getBasicInfo() {
     if (IS_CSV_OUTPUT) {
-      return windowId + "," + assetId + "," + threshold + ",";
+      return windowId + "," +
+              assetId + "," +
+              percentage + "," +
+              threshold + ",";
     } else {
-      return "window: " + windowId + ", asset: " + assetId + ", threshold: " + threshold + ", " + "value: ";
+      return "window: " + windowId +
+              ", asset: " + assetId +
+              ", percentage: " + percentage +
+              ", threshold: " + threshold +
+              ", value: ";
     }
   }
 
   public static String getCsvInfo() {
     if (IS_CSV_OUTPUT) {
-      return "alertId, windowId, assetId, threshold, statValue";
+      return "CSV order: alertId, windowId, assetId, percentage, threshold, statValue";
     } else {
       return "CSV output mode is disabled...";
     }

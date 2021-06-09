@@ -5,8 +5,8 @@ import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
 public class MeanAlert extends StatsAlert {
   private final double mean;
 
-  public MeanAlert(int windowId, double threshold, double mean, int assetId) {
-    super(windowId, assetId, threshold);
+  public MeanAlert(int windowId, int assetId, double percentage, double threshold, double mean) {
+    super(windowId, assetId, percentage, threshold);
     this.mean = mean;
   }
 

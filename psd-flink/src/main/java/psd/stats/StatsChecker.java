@@ -37,43 +37,55 @@ public class StatsChecker {
 
     if (result.getMean() < MEAN_THRESHOLD[index]) {
       double value = result.getMean();
-      if (StatsHelper.lowerThanThreshold(value, MEAN_THRESHOLD[index])) {
-        alertsProduced.add(new MeanAlert(windowId, MEAN_THRESHOLD[index], value, assetId));
+      double threshold = MEAN_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new MeanAlert(windowId, assetId, percentage, threshold, value));
       }
     }
 
     if (result.getMedian() < MEDIAN_THRESHOLD[index]) {
       double value = result.getMedian();
-      if (StatsHelper.lowerThanThreshold(value, MEDIAN_THRESHOLD[index])) {
-        alertsProduced.add(new MedianAlert(windowId, MEDIAN_THRESHOLD[index], value, assetId));
+      double threshold = MEDIAN_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new MedianAlert(windowId, assetId, percentage, threshold, value));
       }
     }
 
     if (result.getQuantile() < QUANTILE_THRESHOLD[index]) {
       double value = result.getQuantile();
-      if (StatsHelper.lowerThanThreshold(value, QUANTILE_THRESHOLD[index])) {
-        alertsProduced.add(new QuanitleAlert(windowId, QUANTILE_THRESHOLD[index], value, assetId));
+      double threshold = QUANTILE_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new QuanitleAlert(windowId, assetId, percentage, threshold, value));
       }
     }
 
     if (result.getMeanFromMinRates() < MEAN_FROM_MIN_RATES_THRESHOLD[index]) {
       double value = result.getMeanFromMinRates();
-      if (StatsHelper.lowerThanThreshold(value, MEAN_FROM_MIN_RATES_THRESHOLD[index])) {
-        alertsProduced.add(new MeanFromMinRates(windowId, MEAN_FROM_MIN_RATES_THRESHOLD[index], value, assetId));
+      double threshold = MEAN_FROM_MIN_RATES_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new MeanFromMinRates(windowId, assetId, percentage, threshold, value));
       }
     }
 
     if (result.getSafetyRateAverageDeviation() < SAFETY_RATE_AVG_DEV_THRESHOLD[index]) {
       double value = result.getSafetyRateAverageDeviation();
-      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_AVG_DEV_THRESHOLD[index])) {
-        alertsProduced.add(new SafetyRateAlert(windowId, SAFETY_RATE_AVG_DEV_THRESHOLD[index], value, assetId));
+      double threshold = SAFETY_RATE_AVG_DEV_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new SafetyRateAlert(windowId, assetId, percentage, threshold, value));
       }
     }
 
     if (result.getSafetyRateGini() < SAFETY_RATE_GINI_THRESHOLD[index]) {
       double value = result.getSafetyRateGini();
-      if (StatsHelper.lowerThanThreshold(value, SAFETY_RATE_GINI_THRESHOLD[index])) {
-        alertsProduced.add(new SafetyRateGiniAlert(windowId, SAFETY_RATE_GINI_THRESHOLD[index], value, assetId));
+      double threshold = SAFETY_RATE_GINI_THRESHOLD[index];
+      double percentage = StatsHelper.calculatePercentage(value, threshold);
+      if (StatsHelper.higherThanMaxTolerance(percentage)) {
+        alertsProduced.add(new SafetyRateGiniAlert(windowId, assetId, percentage, threshold, value));
       }
     }
 
