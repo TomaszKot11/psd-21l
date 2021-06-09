@@ -6,6 +6,7 @@ import org.apache.flink.shaded.curator4.com.google.common.math.Stats;
 import java.util.Arrays;
 
 public class StatsHelper {
+  public static final double MAX_TOLERANCE = 0.02;
 
   private StatsHelper() {
   }
@@ -84,7 +85,7 @@ public class StatsHelper {
   }
 
   public static boolean lowerThanThreshold(double value, double threshold) {
-    return (threshold - value) / (1 + threshold) >= 0.1;
+    return (threshold - value) / (1 + threshold) >= MAX_TOLERANCE;
   }
 
   private static void checkArray(double[] samples) {

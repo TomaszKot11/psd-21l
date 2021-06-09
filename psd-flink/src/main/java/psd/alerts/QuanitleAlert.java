@@ -1,5 +1,7 @@
 package psd.alerts;
 
+import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
+
 public class QuanitleAlert extends StatsAlert {
   private final double quantile;
 
@@ -35,6 +37,10 @@ public class QuanitleAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "QuanitleAlert(" + getBasicInfo() + quantile + ")";
+    if (IS_CSV_OUTPUT) {
+      return "4," + getBasicInfo() + getValue();
+    } else {
+      return "QuanitleAlert(" + getBasicInfo() + getValue() + ")";
+    }
   }
 }

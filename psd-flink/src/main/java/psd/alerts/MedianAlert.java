@@ -1,5 +1,7 @@
 package psd.alerts;
 
+import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
+
 public class MedianAlert extends StatsAlert {
   private final double median;
 
@@ -35,6 +37,10 @@ public class MedianAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "MedianAlert(" + getBasicInfo() + median + ")";
+    if (IS_CSV_OUTPUT) {
+      return "3," + getBasicInfo() + getValue();
+    } else {
+      return "MedianAlert(" + getBasicInfo() + getValue() + ")";
+    }
   }
 }

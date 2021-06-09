@@ -21,9 +21,10 @@ import java.util.Map;
 
 public class InvestmentWalletJob {
   // Increase for new version
-  public static final int REVISION = 2;
+  public static final int REVISION = 4;
 
   public static final boolean IS_DEBUG = false;
+  public static final boolean IS_CSV_OUTPUT = true;
   public static final int DEFAULT_SLIDING_WINDOW_SIZE = 30;
   public static final int DEFAULT_SLIDE_SIZE = 1;
 
@@ -102,6 +103,7 @@ public class InvestmentWalletJob {
       alerts.print();
 
       log("Finishing preparing printing generated alerts step...");
+      log(StatsAlert.getCsvInfo());
 
       // Execute job
       env.execute(JOB_NAME);

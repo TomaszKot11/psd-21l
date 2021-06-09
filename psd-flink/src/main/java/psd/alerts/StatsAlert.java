@@ -1,5 +1,7 @@
 package psd.alerts;
 
+import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
+
 public abstract class StatsAlert {
   private final int windowId;
   private final int assetId;
@@ -26,7 +28,19 @@ public abstract class StatsAlert {
   }
 
   protected String getBasicInfo() {
-    return "window: " + windowId + ", asset: " + assetId + ", threshold: " + threshold + ", " + "value: ";
+    if (IS_CSV_OUTPUT) {
+      return windowId + "," + assetId + "," + threshold + ",";
+    } else {
+      return "window: " + windowId + ", asset: " + assetId + ", threshold: " + threshold + ", " + "value: ";
+    }
+  }
+
+  public static String getCsvInfo() {
+    if (IS_CSV_OUTPUT) {
+      return "alertId, windowId, assetId, threshold, statValue";
+    } else {
+      return "CSV output mode is disabled...";
+    }
   }
 
   @Override

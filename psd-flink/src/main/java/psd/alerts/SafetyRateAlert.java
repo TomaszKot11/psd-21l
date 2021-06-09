@@ -1,5 +1,7 @@
 package psd.alerts;
 
+import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
+
 public class SafetyRateAlert extends StatsAlert {
   private final double rate;
 
@@ -35,6 +37,10 @@ public class SafetyRateAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "SafetyRateAlert(" + getBasicInfo() + rate + ")";
+    if (IS_CSV_OUTPUT) {
+      return "5," + getBasicInfo() + getValue();
+    } else {
+      return "SafetyRateAlert(" + getBasicInfo() + getValue() + ")";
+    }
   }
 }

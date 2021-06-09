@@ -1,5 +1,7 @@
 package psd.alerts;
 
+import static psd.InvestmentWalletJob.IS_CSV_OUTPUT;
+
 public class MeanAlert extends StatsAlert {
   private final double mean;
 
@@ -35,6 +37,10 @@ public class MeanAlert extends StatsAlert {
 
   @Override
   public String toString() {
-    return "MeanAlert(" + getBasicInfo() + mean + ")";
+    if (IS_CSV_OUTPUT) {
+      return "1," + getBasicInfo() + getValue();
+    } else {
+      return "MeanAlert(" + getBasicInfo() + getValue() + ")";
+    }
   }
 }
