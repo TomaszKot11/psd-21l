@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class InvestmentWalletJob {
   // Increase for new version
-  public static final int REVISION = 5;
+  public static final int REVISION = 6;
 
   public static final boolean IS_DEBUG = false;
   public static final boolean IS_CSV_OUTPUT = true;
@@ -61,10 +61,11 @@ public class InvestmentWalletJob {
     if (text != null) {
       log("Preparing tokenization and aggregation step...");
 
+      // key by assetId
       // Assign data stream with sliding window of 30 samples, moved by 1 sample, keyed by asset id
       DataStream<Tuple2<Integer, StatsAggregationResult>> stream =
               text.flatMap(new Tokenizer())
-                      .keyBy(value -> value.f1) // key by assetId
+                      .keyBy(value -> value.f1)
                       .countWindow(DEFAULT_SLIDING_WINDOW_SIZE, DEFAULT_SLIDE_SIZE)
                       .aggregate(new StatsAggregate());
 
