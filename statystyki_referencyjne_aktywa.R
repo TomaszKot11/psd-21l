@@ -49,7 +49,7 @@ ten_percentage_means_df <- list()
 for(i in 1:6) {
   current_column <- df[[i]]
   current_column <- current_column[order(current_column)]
-  length_idx <- 100 * 0.1 # TODO: tutaj milion
+  length_idx <- 1000000 * 0.1
   n_first <- current_column[1:length_idx]
   show(n_first)
   intermediate <- mean(n_first)

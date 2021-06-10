@@ -2,10 +2,10 @@ import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('wallet-1.csv')
+df = pd.read_csv('dane_pośrednie.csv')
 some_value = df.groupby(['assetId', 'alertId']).agg(['count'])
 assets_label = ['Aktywa 1', 'Aktywa 2', 'Aktywa 3', 'Aktywa 4', 'Aktywa 5', 'Aktywa 6']
-legend_dictionary = ['Średnia', 'Średnia z 10%', 'Mediana', 'Kwantyl', 'Odchylenie przeciętnym', 'Średnia różnica Giniego']
+legend_dictionary = ['Średnia', 'Średnia z 10%', 'Mediana', 'Kwantyl', 'Odchylenie przeciętne', 'Średnia różnica Giniego']
 fig = plt.figure(figsize=(12,4))
 
 for i in range(1, 7): 
